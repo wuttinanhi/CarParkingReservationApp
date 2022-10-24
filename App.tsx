@@ -11,24 +11,59 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 
-import {Provider as PaperProvider} from 'react-native-paper';
+import {Button, Provider as PaperProvider} from 'react-native-paper';
 
 import BottomNavbar from './components/BottomNavbar';
+import {LoginPage} from './pages/LoginPage';
 
-const App = () => {
-  return (
-    <PaperProvider>
-      <View style={styles.bgOrange}>
-        <Text>Test</Text>
-      </View>
+import {NavigationContainer} from '@react-navigation/native';
 
-      <BottomNavbar />
-    </PaperProvider>
-  );
-};
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+
+const Stack = createNativeStackNavigator();
 
 const styles = StyleSheet.create({
   bgOrange: {backgroundColor: 'orange'},
 });
+
+function DefaultIndexPage({navigation}: {navigation: any}) {
+  return (
+    <>
+      <LoginPage />
+      <View style={styles.bgOrange}>
+        <Text>Test</Text>
+        <Button
+          mode="contained"
+          onPress={() => {
+            navigation.navigate('Login');
+          }}>
+          Login Page
+        </Button>
+
+        <Button
+          mode="contained"
+          onPress={() => {
+            console.log(navigation);
+          }}>
+          DEV
+        </Button>
+      </View>
+      <BottomNavbar />
+    </>
+  );
+}
+
+const App = () => {
+  return (
+    <PaperProvider>
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen name="Index" component={DefaultIndexPage} />
+          <Stack.Screen name="Login" component={LoginPage} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </PaperProvider>
+  );
+};
 
 export default App;
