@@ -8,58 +8,34 @@
  * @format
  */
 
-import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
-
-import {Button, Provider as PaperProvider} from 'react-native-paper';
-
-import BottomNavbar from './components/BottomNavbar';
-import {LoginPage} from './pages/LoginPage';
-
 import {NavigationContainer} from '@react-navigation/native';
-
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import React from 'react';
+import {Provider as PaperProvider} from 'react-native-paper';
 import Toast from 'react-native-toast-message';
+import {ChatPage} from './pages/ChatPage';
+import {DefaultIndexPage} from './pages/DefaultIndexPage';
+import {LoginPage} from './pages/LoginPage';
+import {RegisterPage} from './pages/RegisterPage';
+import {ReservationPage} from './pages/ReservationPage';
+import {SearchPage} from './pages/SearchPage';
+import {UserPage} from './pages/UserPage';
 
 const Stack = createNativeStackNavigator();
-
-const styles = StyleSheet.create({
-  bgOrange: {backgroundColor: 'orange'},
-});
-
-function DefaultIndexPage({navigation}: {navigation: any}) {
-  return (
-    <>
-      <LoginPage />
-      <View style={styles.bgOrange}>
-        <Text>Test</Text>
-        <Button
-          mode="contained"
-          onPress={() => {
-            navigation.navigate('Login');
-          }}>
-          Login Page
-        </Button>
-
-        <Button
-          mode="contained"
-          onPress={() => {
-            console.log(navigation);
-          }}>
-          DEV
-        </Button>
-      </View>
-      <BottomNavbar />
-    </>
-  );
-}
 
 const App = () => {
   return (
     <PaperProvider>
       <NavigationContainer>
         <Stack.Navigator screenOptions={{headerShown: false}}>
-          <Stack.Screen name="Login" component={LoginPage} />
+          <Stack.Screen name="LoginPage" component={LoginPage} />
+          <Stack.Screen name="RegisterPage" component={RegisterPage} />
+
+          <Stack.Screen name="ReservationPage" component={ReservationPage} />
+          <Stack.Screen name="ChatPage" component={ChatPage} />
+          <Stack.Screen name="SearchPage" component={SearchPage} />
+          <Stack.Screen name="UserPage" component={UserPage} />
+
           <Stack.Screen name="Index" component={DefaultIndexPage} />
         </Stack.Navigator>
       </NavigationContainer>
