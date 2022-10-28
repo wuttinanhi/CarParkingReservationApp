@@ -12,7 +12,9 @@ export const InvoiceCard = (props: IInvoiceCardProps) => {
   const navigation = useNavigation<any>();
 
   function gotoInvoiceCheckoutPage() {
-    navigation.navigate('InvoiceCheckoutPage');
+    navigation.navigate('InvoiceCheckoutPage', {
+      invoiceId: props.invoice.invoice_id,
+    });
   }
 
   return (
@@ -24,7 +26,10 @@ export const InvoiceCard = (props: IInvoiceCardProps) => {
       />
       <Card.Actions>
         <Button mode="text">{props.invoice.invoice_status}</Button>
-        <Button mode="contained" onPress={gotoInvoiceCheckoutPage}>
+        <Button
+          mode="contained"
+          onPress={gotoInvoiceCheckoutPage}
+          disabled={props.invoice.invoice_status !== 'UNPAID'}>
           Pay
         </Button>
       </Card.Actions>

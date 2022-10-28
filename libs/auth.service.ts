@@ -34,7 +34,11 @@ export interface IAuthLogin {
 
 export class AuthService extends BaseService {
   public static async register(registerInfo: IAuthRegister) {
-    const req = await this.sendPostRequest('auth/register', registerInfo);
+    const req = await BaseService.sendPostRequest({
+      url: 'auth/register',
+      data: registerInfo,
+      headers: {'Content-Type': 'application/json'},
+    });
     const json = await req.json();
 
     if (req.status === 400) {

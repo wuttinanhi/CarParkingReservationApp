@@ -10,7 +10,7 @@ export interface IInvoiceRecord {
   invoice_user_id: number;
 }
 
-export interface IStripePayResult {
+export interface IPaymentPayResult {
   stripe_client_secret: string;
 }
 
@@ -79,5 +79,30 @@ export class PaymentService extends BaseService {
     }
 
     return json as IInvoiceRecord[];
+  }
+
+  public static async payInvoice(invoiceId: number) {
+    const headers = await AuthService.buildAuthHeader({
+      'Content-Type': 'application/json',
+    });
+    const body = {invoice_id: invoiceId};
+
+    const req = await BaseService.sendPostRequest({
+      url: 'payment/pay',
+      headers,
+      data: body,
+    });
+
+    const json = await req.json();
+
+    if (req.status === 400) {
+      throw new PaymentBadRequestError(json, 'Invalid pay requested!');
+    }
+
+    if (!req.ok) {
+      throw new PaymentError(json.error);
+    }
+
+    return json as IPaymentPayResult;
   }
 }

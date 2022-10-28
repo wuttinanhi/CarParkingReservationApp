@@ -6,22 +6,23 @@ export interface IPaginationQuery {
   search?: string;
 }
 
-export interface IGetRequestOptions {
+export interface IRequestOptions {
   url: string;
   query?: any;
   headers?: any;
+  data?: any;
 }
 
 export class BaseService {
   protected static readonly baseUrl =
     'https://car-parking-reservation-api-production.up.railway.app/';
 
-  protected static async sendGetRequest(opt: IGetRequestOptions) {
-    const fetchHeaders = opt.headers ?? {};
-    let fetchUrl = BaseService.baseUrl + opt.url;
+  protected static async sendGetRequest(opts: IRequestOptions) {
+    const fetchHeaders = opts.headers ?? {};
+    let fetchUrl = BaseService.baseUrl + opts.url;
 
-    if (opt.query) {
-      const searchParams = new URLSearchParams(opt.query).toString();
+    if (opts.query) {
+      const searchParams = new URLSearchParams(opts.query).toString();
       fetchUrl += '?' + searchParams;
     }
 
@@ -33,14 +34,10 @@ export class BaseService {
     return req;
   }
 
-  protected static async sendPostRequest(
-    url: string,
-    data: Record<any, any>,
-    headers = {'Content-Type': 'application/json'},
-  ) {
-    const fetchHeaders = headers;
-    const fetchUrl = BaseService.baseUrl + url;
-    const body = JSON.stringify(data);
+  protected static async sendPostRequest(opts: IRequestOptions) {
+    const fetchHeaders = opts.headers ?? {};
+    const fetchUrl = BaseService.baseUrl + opts.url;
+    const body = JSON.stringify(opts.data);
 
     const req = await fetch(fetchUrl, {
       method: 'POST',
