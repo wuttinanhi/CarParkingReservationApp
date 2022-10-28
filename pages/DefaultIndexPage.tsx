@@ -24,11 +24,7 @@ export function DefaultIndexPage({navigation}: {navigation: any}) {
           Login Page
         </Button>
 
-        <Button
-          mode="contained"
-          onPress={() => {
-            console.log(navigation);
-          }}>
+        <Button mode="contained" onPress={() => {}}>
           DEV
         </Button>
       </View>

@@ -4,12 +4,16 @@ import {RetrieveInfoError} from './error';
 
 export class AuthError extends Error {}
 
-export class AuthRegisterError extends AuthError {
+export class AuthBadRequestError extends AuthError {
   constructor(
-    public keyDescriptionPair: Record<any, any>,
-    message = 'Invalid register data format!',
+    protected keyDescriptionPair: Record<any, any>,
+    message = 'Invalid input format!',
   ) {
     super(message);
+  }
+
+  public getErrorRecord() {
+    return this.keyDescriptionPair;
   }
 }
 
@@ -20,6 +24,12 @@ export interface IAuthRegister {
   firstname: string;
   lastname: string;
   phone_number: string;
+  citizen_id: string;
+}
+
+export interface IAuthLogin {
+  email: string;
+  password: string;
 }
 
 export class AuthService extends BaseService {
@@ -28,7 +38,7 @@ export class AuthService extends BaseService {
     const json = await req.json();
 
     if (req.status === 400) {
-      throw new AuthRegisterError(json);
+      throw new AuthBadRequestError(json, 'Invalid data formatted!');
     }
 
     if (!req.ok) {
@@ -37,12 +47,11 @@ export class AuthService extends BaseService {
   }
 
   public static async login(
-    email: string,
-    password: string,
+    loginInfo: IAuthLogin,
   ): Promise<string | undefined> {
     const headers = {'Content-Type': 'application/json'};
     const url = BaseService.baseUrl + 'auth/login';
-    const body = JSON.stringify({email, password});
+    const body = JSON.stringify(loginInfo);
 
     const req = await fetch(url, {
       method: 'POST',
@@ -50,17 +59,17 @@ export class AuthService extends BaseService {
       body,
     });
 
-    const res = await req.json();
+    const json = await req.json();
 
     if (req.status === 400) {
-      throw new AuthError('Invalid email or password format!');
+      throw new AuthBadRequestError(json, 'Invalid data formatted!');
     }
 
     if (!req.ok) {
       throw new AuthError('Invalid email or password!');
     }
 
-    const {token} = res;
+    const {token} = json;
 
     return token;
   }
@@ -83,6 +92,10 @@ export class AuthService extends BaseService {
     } catch (error) {
       return null;
     }
+  }
+
+  public static async removeAccessToken() {
+    await AsyncStorage.removeItem('accessToken');
   }
 
   public static async getUser(): Promise<string | undefined | null> {
@@ -112,6 +125,30 @@ export class AuthService extends BaseService {
       return res;
     } catch (error) {
       return null;
+    }
+  }
+
+  public static async checkAccessToken(accessToken: string) {
+    try {
+      const url = BaseService.baseUrl + 'user/me';
+
+      const headers = {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      };
+
+      const req = await fetch(url, {
+        method: 'GET',
+        headers,
+      });
+
+      if (!req.ok) {
+        return false;
+      }
+
+      return true;
+    } catch (error) {
+      return false;
     }
   }
 }
