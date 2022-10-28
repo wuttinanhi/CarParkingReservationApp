@@ -1,10 +1,29 @@
+export interface IPaginationQuery {
+  page: number;
+  limit: number;
+  sort: number;
+  order_by: string;
+  search?: string;
+}
+
+export interface IGetRequestOptions {
+  url: string;
+  query?: any;
+  headers?: any;
+}
+
 export class BaseService {
-  public static readonly baseUrl =
+  protected static readonly baseUrl =
     'https://car-parking-reservation-api-production.up.railway.app/';
 
-  public static async sendGetRequest(url: string, headers = {}) {
-    const fetchHeaders = headers;
-    const fetchUrl = BaseService.baseUrl + url;
+  protected static async sendGetRequest(opt: IGetRequestOptions) {
+    const fetchHeaders = opt.headers ?? {};
+    let fetchUrl = BaseService.baseUrl + opt.url;
+
+    if (opt.query) {
+      const searchParams = new URLSearchParams(opt.query).toString();
+      fetchUrl += '?' + searchParams;
+    }
 
     const req = await fetch(fetchUrl, {
       method: 'GET',
@@ -14,7 +33,7 @@ export class BaseService {
     return req;
   }
 
-  public static async sendPostRequest(
+  protected static async sendPostRequest(
     url: string,
     data: Record<any, any>,
     headers = {'Content-Type': 'application/json'},

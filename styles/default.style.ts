@@ -2,6 +2,9 @@ import {StyleSheet} from 'react-native';
 
 export const defaultStyles = StyleSheet.create({
   //basic
+  fullHeight: {
+    height: '100%',
+  },
   main: {
     paddingVertical: '5%',
     paddingHorizontal: '5%',

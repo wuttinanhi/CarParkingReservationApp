@@ -151,4 +151,16 @@ export class AuthService extends BaseService {
       return false;
     }
   }
+
+  public static async buildAuthHeader(other?: any) {
+    const accessToken = await this.getAccessToken();
+
+    const headers = {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+      ...other,
+    };
+
+    return headers;
+  }
 }
