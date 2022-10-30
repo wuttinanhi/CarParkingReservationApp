@@ -47,4 +47,8 @@ export class BaseService {
 
     return req;
   }
+
+  public static getApiUrl() {
+    return this.baseUrl;
+  }
 }

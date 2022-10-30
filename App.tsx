@@ -15,14 +15,14 @@ import React, {useEffect, useState} from 'react';
 import {Provider as PaperProvider} from 'react-native-paper';
 import Toast from 'react-native-toast-message';
 import {PaymentService} from './libs/payment.service';
+import {CarPage} from './pages/CarPage';
+import {ChatListPage} from './pages/ChatListPage';
 import {ChatPage} from './pages/ChatPage';
-import {DefaultIndexPage} from './pages/DefaultIndexPage';
+import {IndexPage} from './pages/IndexPage';
 import {InvoiceCheckoutPage} from './pages/InvoiceCheckoutPage';
 import {InvoicePage} from './pages/InvoicePage';
 import {LoginPage} from './pages/LoginPage';
 import {RegisterPage} from './pages/RegisterPage';
-import {ReservationPage} from './pages/ReservationPage';
-import {SearchPage} from './pages/SearchPage';
 import {UserPage} from './pages/UserPage';
 
 const Stack = createNativeStackNavigator();
@@ -48,21 +48,54 @@ const App = () => {
       <PaperProvider>
         <NavigationContainer>
           <Stack.Navigator screenOptions={{headerShown: false}}>
-            <Stack.Screen name="LoginPage" component={LoginPage} />
-            <Stack.Screen name="RegisterPage" component={RegisterPage} />
+            <Stack.Screen
+              name="LoginPage"
+              component={LoginPage}
+              options={{animation: 'none'}}
+            />
+            <Stack.Screen
+              name="RegisterPage"
+              component={RegisterPage}
+              options={{animation: 'none'}}
+            />
 
-            <Stack.Screen name="ReservationPage" component={ReservationPage} />
-            <Stack.Screen name="ChatPage" component={ChatPage} />
-            <Stack.Screen name="SearchPage" component={SearchPage} />
-            <Stack.Screen name="UserPage" component={UserPage} />
+            <Stack.Screen
+              name="ReservationPage"
+              component={IndexPage}
+              options={{animation: 'none'}}
+            />
+            <Stack.Screen
+              name="ChatListPage"
+              component={ChatListPage}
+              options={{animation: 'none'}}
+            />
+            <Stack.Screen
+              name="CarPage"
+              component={CarPage}
+              options={{animation: 'none'}}
+            />
+            <Stack.Screen
+              name="UserPage"
+              component={UserPage}
+              options={{animation: 'none'}}
+            />
 
-            <Stack.Screen name="InvoicePage" component={InvoicePage} />
+            <Stack.Screen
+              name="ChatPage"
+              component={ChatPage}
+              options={{animation: 'none'}}
+            />
+
+            <Stack.Screen
+              name="InvoicePage"
+              component={InvoicePage}
+              options={{animation: 'none'}}
+            />
             <Stack.Screen
               name="InvoiceCheckoutPage"
               component={InvoiceCheckoutPage}
+              options={{animation: 'none'}}
             />
-
-            <Stack.Screen name="Index" component={DefaultIndexPage} />
           </Stack.Navigator>
         </NavigationContainer>
         <Toast />
