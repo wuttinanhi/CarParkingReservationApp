@@ -30,4 +30,10 @@ export const defaultStyles = StyleSheet.create({
   mt30: {marginTop: '30%'},
   mt40: {marginTop: '40%'},
   mt50: {marginTop: '50%'},
+  mb05: {marginBottom: '5%'},
+  mb10: {marginBottom: '10%'},
+  mb20: {marginBottom: '20%'},
+  mb30: {marginBottom: '30%'},
+  mb40: {marginBottom: '40%'},
+  mb50: {marginBottom: '50%'},
 });

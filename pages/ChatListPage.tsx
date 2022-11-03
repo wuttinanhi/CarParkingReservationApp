@@ -1,7 +1,7 @@
 import React from 'react';
 import {View} from 'react-native';
-import {Text} from 'react-native-paper';
 import {ChatRecord} from '../components/ChatRecord';
+import {HeaderBanner} from '../components/HeaderBanner';
 import {ChatService, IChatHeadRecord} from '../libs/chat.service';
 import {defaultStyles} from '../styles/default.style';
 
@@ -34,9 +34,7 @@ export const ChatListPage = () => {
 
   return (
     <View style={defaultStyles.main}>
-      <Text variant="displayMedium" style={defaultStyles.mt10}>
-        Chat
-      </Text>
+      <HeaderBanner headerText="Chat" />
       <View style={defaultStyles.mt10}>{renderChatList()}</View>
     </View>
   );

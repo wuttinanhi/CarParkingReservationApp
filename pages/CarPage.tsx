@@ -1,6 +1,12 @@
 import React from 'react';
-import {Text} from 'react-native-paper';
+import {View} from 'react-native';
+import {HeaderBanner} from '../components/HeaderBanner';
+import {defaultStyles} from '../styles/default.style';
 
 export const CarPage = () => {
-  return <Text>Car Page</Text>;
+  return (
+    <View style={defaultStyles.main}>
+      <HeaderBanner headerText="Car" />
+    </View>
+  );
 };
