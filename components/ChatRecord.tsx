@@ -1,6 +1,6 @@
 import {useNavigation} from '@react-navigation/native';
 import React from 'react';
-import {Card} from 'react-native-paper';
+import {Avatar, Card} from 'react-native-paper';
 import {IChatHeadRecord} from '../libs/chat.service';
 import {defaultStyles} from '../styles/default.style';
 
@@ -20,8 +20,9 @@ export const ChatHeadRecord = (props: IChatRecordProps) => {
   return (
     <Card style={defaultStyles.mt05} onPress={gotoChatPage}>
       <Card.Title
-        title={props.chatHeadRecord.chat_head_target_user.user_username}
-        subtitle={props.chatHeadRecord.chat_head_last_update_date}
+        title={`    ${props.chatHeadRecord.chat_head_target_user.user_username}`}
+        subtitle={`     ${props.chatHeadRecord.chat_head_last_update_date}`}
+        left={() => <Avatar.Icon {...props} icon="message" />}
         titleVariant="titleLarge"
       />
     </Card>
