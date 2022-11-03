@@ -8,7 +8,7 @@ export const defaultStyles = StyleSheet.create({
   main: {
     paddingVertical: '5%',
     paddingHorizontal: '5%',
-    height: '80%',
+    height: '100%',
   },
   //text
   textCenter: {textAlign: 'center'},

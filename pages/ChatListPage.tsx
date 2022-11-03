@@ -1,5 +1,5 @@
 import React from 'react';
-import {View} from 'react-native';
+import {ScrollView, View} from 'react-native';
 import {ChatHeadRecord} from '../components/ChatRecord';
 import {HeaderBanner} from '../components/HeaderBanner';
 import {ChatService, IChatHeadRecord} from '../libs/chat.service';
@@ -37,7 +37,7 @@ export const ChatListPage = () => {
   return (
     <View style={defaultStyles.main}>
       <HeaderBanner headerText="Chat" />
-      <View>{renderChatList()}</View>
+      <ScrollView>{renderChatList()}</ScrollView>
     </View>
   );
 };

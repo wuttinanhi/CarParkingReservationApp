@@ -12,6 +12,15 @@ export interface IUserFull {
   user_username: string;
 }
 
+export interface IUserShareable {
+  user_email: string;
+  user_firstname: string;
+  user_id: number;
+  user_lastname: string;
+  user_phone_number: string;
+  user_username: string;
+}
+
 export class AuthError extends Error {}
 
 export class AuthBadRequestError extends AuthError {
