@@ -1,6 +1,6 @@
 import React from 'react';
 import {View} from 'react-native';
-import {ChatRecord} from '../components/ChatRecord';
+import {ChatHeadRecord} from '../components/ChatRecord';
 import {HeaderBanner} from '../components/HeaderBanner';
 import {ChatService, IChatHeadRecord} from '../libs/chat.service';
 import {defaultStyles} from '../styles/default.style';
@@ -9,7 +9,7 @@ export const ChatListPage = () => {
   const [dataList, setDataList] = React.useState<IChatHeadRecord[]>();
 
   async function fetchChatList() {
-    const list = await ChatService.listChat({
+    const list = await ChatService.listChatHead({
       limit: 10,
       order_by: 'chathead_last_update_date',
       page: 1,
@@ -24,7 +24,9 @@ export const ChatListPage = () => {
       return;
     }
     return dataList.map(record => {
-      return <ChatRecord chatHeadRecord={record} key={record.chat_head_id} />;
+      return (
+        <ChatHeadRecord chatHeadRecord={record} key={record.chat_head_id} />
+      );
     });
   }
 
@@ -35,7 +37,7 @@ export const ChatListPage = () => {
   return (
     <View style={defaultStyles.main}>
       <HeaderBanner headerText="Chat" />
-      <View style={defaultStyles.mt10}>{renderChatList()}</View>
+      <View>{renderChatList()}</View>
     </View>
   );
 };

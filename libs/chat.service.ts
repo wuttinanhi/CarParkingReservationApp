@@ -24,12 +24,16 @@ export interface IChatRecord {
   chat_to_user_id: number;
 }
 
+export interface IChatHistoryQuery extends IPaginationQuery {
+  to_user_id: number;
+}
+
 export class ChatService extends BaseService {
-  public static async listChat(query: IPaginationQuery) {
+  public static async listChatHead(query: IPaginationQuery) {
     const headers = await AuthService.buildAuthHeader();
 
     const req = await this.sendGetRequest({
-      url: 'chat/list',
+      url: '/chat/chat_head/list',
       headers,
       query,
     });
@@ -41,5 +45,23 @@ export class ChatService extends BaseService {
     }
 
     return json as IChatHeadRecord[];
+  }
+
+  public static async listChatHistory(query: IChatHistoryQuery) {
+    const headers = await AuthService.buildAuthHeader();
+
+    const req = await this.sendGetRequest({
+      url: '/chat/chat/list',
+      headers,
+      query,
+    });
+
+    const json = await req.json();
+
+    if (!req.ok) {
+      throw new ChatError(json.error);
+    }
+
+    return json as IChatRecord[];
   }
 }

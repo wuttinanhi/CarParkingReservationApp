@@ -11,7 +11,7 @@ export const GoToInvoicePageButton = () => {
 
   return (
     <Button mode="contained" onPress={gotoInvoicePage}>
-      Invoice Page
+      My Invoice
     </Button>
   );
 };

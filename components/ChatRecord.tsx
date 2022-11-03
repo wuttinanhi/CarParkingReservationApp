@@ -8,7 +8,7 @@ export interface IChatRecordProps {
   chatHeadRecord: IChatHeadRecord;
 }
 
-export const ChatRecord = (props: IChatRecordProps) => {
+export const ChatHeadRecord = (props: IChatRecordProps) => {
   const navigation = useNavigation<any>();
 
   function gotoChatPage() {

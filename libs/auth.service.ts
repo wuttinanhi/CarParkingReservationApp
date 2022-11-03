@@ -2,6 +2,16 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {BaseService} from './base.service';
 import {RetrieveInfoError} from './error';
 
+export interface IUserFull {
+  user_citizen_id: string;
+  user_email: string;
+  user_firstname: string;
+  user_id: number;
+  user_lastname: string;
+  user_phone_number: string;
+  user_username: string;
+}
+
 export class AuthError extends Error {}
 
 export class AuthBadRequestError extends AuthError {
@@ -102,34 +112,24 @@ export class AuthService extends BaseService {
     await AsyncStorage.removeItem('accessToken');
   }
 
-  public static async getUser(): Promise<string | undefined | null> {
-    try {
-      const accessToken = await AuthService.getAccessToken();
-      if (!accessToken) {
-        return null;
-      }
-
-      const headers = {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${accessToken}`,
-      };
-      const url = BaseService.baseUrl + 'user/me';
-
-      const req = await fetch(url, {
-        method: 'GET',
-        headers,
-      });
-
-      const res = await req.json();
-
-      if (!req.ok) {
-        throw new RetrieveInfoError('Failed to retrieve user info!');
-      }
-
-      return res;
-    } catch (error) {
+  public static async getUser() {
+    const accessToken = await AuthService.getAccessToken();
+    if (!accessToken) {
       return null;
     }
+
+    const headers = await this.buildAuthHeader();
+    const req = await this.sendGetRequest({
+      url: '/user/me',
+      headers,
+    });
+    const res = await req.json();
+
+    if (!req.ok) {
+      throw new RetrieveInfoError('Failed to retrieve user info!');
+    }
+
+    return res as IUserFull;
   }
 
   public static async checkAccessToken(accessToken: string) {
