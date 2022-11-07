@@ -23,7 +23,7 @@ export const InvoicePage = () => {
       limit: 10,
       order_by: 'id',
       page: 1,
-      sort: 0,
+      sort: 1,
     });
 
     setInvoiceList(list);
