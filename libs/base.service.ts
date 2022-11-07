@@ -13,6 +13,19 @@ export interface IRequestOptions {
   data?: any;
 }
 
+export class BaseBadRequestError extends Error {
+  constructor(
+    protected keyDescriptionPair: Record<any, any>,
+    message = 'Invalid input format!',
+  ) {
+    super(message);
+  }
+
+  public getErrorRecord() {
+    return this.keyDescriptionPair;
+  }
+}
+
 export class BaseService {
   protected static readonly baseUrl =
     'https://car-parking-reservation-api-production.up.railway.app/';
@@ -41,6 +54,34 @@ export class BaseService {
 
     const req = await fetch(fetchUrl, {
       method: 'POST',
+      headers: fetchHeaders,
+      body,
+    });
+
+    return req;
+  }
+
+  protected static async sendPatchRequest(opts: IRequestOptions) {
+    const fetchHeaders = opts.headers ?? {};
+    const fetchUrl = BaseService.baseUrl + opts.url;
+    const body = JSON.stringify(opts.data);
+
+    const req = await fetch(fetchUrl, {
+      method: 'PATCH',
+      headers: fetchHeaders,
+      body,
+    });
+
+    return req;
+  }
+
+  protected static async sendDeleteRequest(opts: IRequestOptions) {
+    const fetchHeaders = opts.headers ?? {};
+    const fetchUrl = BaseService.baseUrl + opts.url;
+    const body = JSON.stringify(opts.data);
+
+    const req = await fetch(fetchUrl, {
+      method: 'DELETE',
       headers: fetchHeaders,
       body,
     });

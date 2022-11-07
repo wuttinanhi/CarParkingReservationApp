@@ -18,3 +18,11 @@ export const ErrorText = ({errObj, keyName}: IErrorTextProps) => {
   }
   return null;
 };
+
+export interface IErrorRedTextProps {
+  message: string;
+}
+
+export const ErrorTextRed = ({message}: IErrorRedTextProps) => {
+  return <Text style={defaultStyles.redText}>{message}</Text>;
+};
