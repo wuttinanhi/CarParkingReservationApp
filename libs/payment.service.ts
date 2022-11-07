@@ -63,7 +63,7 @@ export class PaymentService extends BaseService {
     const headers = await AuthService.buildAuthHeader();
 
     const req = await this.sendGetRequest({
-      url: 'payment/my_invoice',
+      url: 'payment/list',
       headers,
       query,
     });

@@ -1,12 +1,12 @@
 import {AuthService, IUserShareable} from './auth.service';
 import {BaseService, IPaginationQuery} from './base.service';
-import {ICar} from './car.service';
+import {ICarRecord} from './car.service';
 import {IParkingLot} from './parking-lot.service';
 
 export class ReservationError extends Error {}
 
 export interface IReservationRecord {
-  car: ICar;
+  car: ICarRecord;
   parking_lot: IParkingLot;
   reservation: Reservation;
   user: IUserShareable;

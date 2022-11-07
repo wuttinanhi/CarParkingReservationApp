@@ -1,6 +1,7 @@
 import React from 'react';
-import {ScrollView, View} from 'react-native';
+import {View} from 'react-native';
 import {HeaderBanner} from '../components/HeaderBanner';
+import {PaginationWrapper} from '../components/PaginationWrapper';
 import {ReservationRecord} from '../components/ReservationRecord';
 import {
   IReservationRecord,
@@ -9,40 +10,27 @@ import {
 import {defaultStyles} from '../styles/default.style';
 
 export const ReservationPage = () => {
-  const [reservationData, setReservationData] = React.useState<
-    IReservationRecord[]
-  >([]);
-
-  async function load() {
-    const res = await ReservationService.listReservation({
-      limit: 10,
+  async function loadFunction(page: number) {
+    return ReservationService.listReservation({
+      limit: 5,
       order_by: 'id',
-      page: 1,
-      sort: 0,
+      page,
+      sort: 1,
     });
-
-    setReservationData(res);
   }
 
-  function renderReservationData() {
-    return reservationData.map((v, i) => (
-      <ReservationRecord key={i} reservation={v} />
-    ));
-  }
-
-  React.useEffect(() => {
-    load();
-  }, []);
-
-  if (!reservationData) {
-    return null;
+  function renderRecord(v: IReservationRecord, i: number) {
+    return <ReservationRecord key={i} reservation={v} />;
   }
 
   return (
     <>
       <View style={defaultStyles.main}>
         <HeaderBanner headerText="Reservation" />
-        <ScrollView>{renderReservationData()}</ScrollView>
+        <PaginationWrapper
+          loadFunction={loadFunction}
+          renderItem={renderRecord}
+        />
       </View>
     </>
   );

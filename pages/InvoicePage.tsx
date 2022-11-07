@@ -1,7 +1,7 @@
 import {useRoute} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
 import {ScrollView, View} from 'react-native';
-import {Text} from 'react-native-paper';
+import {HeaderBanner} from '../components/HeaderBanner';
 import {InvoiceCard} from '../components/InvoiceCard';
 import {IInvoiceRecord, PaymentService} from '../libs/payment.service';
 import {defaultStyles} from '../styles/default.style';
@@ -47,9 +47,7 @@ export const InvoicePage = () => {
 
   return (
     <ScrollView style={defaultStyles.main}>
-      <Text variant="titleLarge" style={defaultStyles.mt10}>
-        Invoice:
-      </Text>
+      <HeaderBanner headerText="Invoice:" />
 
       <View style={defaultStyles.mt10}>{renderInvoiceCard(invoiceList)}</View>
     </ScrollView>
