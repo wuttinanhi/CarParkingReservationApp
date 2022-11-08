@@ -40,7 +40,12 @@ export const RegisterPage = () => {
         citizen_id: citizenId,
       });
 
-      navigation.navigate('ReservationPage');
+      Toast.show({
+        type: 'success',
+        text1: 'Successfully registered',
+        position: 'top',
+      });
+      navigation.navigate('LoginPage');
     } catch (error) {
       if (error instanceof AuthBadRequestError) {
         const errObj = error.getErrorRecord();
