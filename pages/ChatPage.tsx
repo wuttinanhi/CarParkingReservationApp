@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-native/no-inline-styles */
 import {useNavigation, useRoute} from '@react-navigation/native';
 import React from 'react';
@@ -12,7 +11,7 @@ import {
 import {Appbar, Button} from 'react-native-paper';
 import {io, Socket} from 'socket.io-client';
 import {ChatBubble} from '../components/ChatBubble';
-import {AuthService} from '../libs/auth.service';
+import {AuthService, IUserFull} from '../libs/auth.service';
 import {BaseService} from '../libs/base.service';
 import {ChatService, IChatHeadRecord, IChatRecord} from '../libs/chat.service';
 
@@ -32,6 +31,8 @@ export const ChatPage = () => {
   const [socketHandler, setSocketHandler] = React.useState<Socket | null>(null);
   const [isConnected, setIsConnected] = React.useState(false);
   const [isLogin, setIsLogin] = React.useState(false);
+
+  const [selfUserDetails, setSelfUserDetails] = React.useState<IUserFull>();
 
   function loginChat() {
     return new Promise<void>(async resolve => {
@@ -89,28 +90,21 @@ export const ChatPage = () => {
     setChatHistory(response);
 
     console.log('Chat loaded!');
+  }
 
-    // const reqData = {
-    //   jwt_token: await AuthService.getAccessToken(),
-    //   order_by: 'id',
-    //   page: 1,
-    //   limit: 30,
-    //   sort: 1,
-    //   to_user: 3,
-    // };
-
-    // socketHandler.emit('chat_list', reqData, (response: any) => {
-    //   if (!response) {
-    //     return console.log('chat_list return null!');
-    //   }
-    //   setChatHistory(response);
-    //   console.log('Chat loaded!');
-    // });
+  async function loadSelfUserDetails() {
+    const result = await AuthService.getUser();
+    if (!result) {
+      return;
+    }
+    setSelfUserDetails(result);
   }
 
   // on loaded
   React.useEffect(() => {
     console.log('Connecting...');
+
+    loadSelfUserDetails();
 
     const socket = io(BaseService.getApiUrl(), {
       timeout: 1000,
@@ -198,7 +192,7 @@ export const ChatPage = () => {
       result.push(
         <ChatBubble
           key={record.chat_id}
-          left={record.chat_from_user_id !== 2}
+          left={record.chat_from_user_id !== selfUserDetails?.user_id}
           text={record.chat_message}
         />,
       );

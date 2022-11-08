@@ -25,6 +25,7 @@ import {InvoicePage} from './pages/InvoicePage';
 import {LoginPage} from './pages/LoginPage';
 import {RegisterPage} from './pages/RegisterPage';
 import {UserPage} from './pages/UserPage';
+import {UserProfile} from './pages/UserProfile';
 
 const Stack = createNativeStackNavigator();
 
@@ -101,6 +102,12 @@ const App = () => {
             <Stack.Screen
               name="CreateReservationPage"
               component={CreateReservationPage}
+              options={{animation: 'none'}}
+            />
+
+            <Stack.Screen
+              name="UserProfile"
+              component={UserProfile}
               options={{animation: 'none'}}
             />
           </Stack.Navigator>

@@ -18,8 +18,8 @@ export const LoginPage = () => {
 
   const [loggingIn, setLoggingIn] = useState(false);
 
-  const [email, setEmail] = useState('annie@example.com');
-  const [password, setPassword] = useState('annie-password');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const [loginButtonDisabled, setLoginButtonDisabled] = useState(false);
 

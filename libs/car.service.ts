@@ -1,4 +1,4 @@
-import {AuthService} from './auth.service';
+import {AuthService, IUserShareable} from './auth.service';
 import {
   BaseBadRequestError,
   BaseService,
@@ -28,6 +28,14 @@ export interface CarAddDto {
 export interface CarUpdateDto {
   car_id: number;
   car_license_plate: string;
+  car_type: string;
+}
+
+export interface ICarSearchByLicensePlateResult {
+  car_id: number;
+  car_license_plate: string;
+  car_owner: IUserShareable;
+  car_owner_id: number;
   car_type: string;
 }
 
@@ -116,5 +124,23 @@ export class CarService extends BaseService {
     }
 
     return;
+  }
+
+  public static async searchCarByLicensePlate(licensePlate: string) {
+    const headers = await AuthService.buildAuthHeader();
+
+    const req = await this.sendPostRequest({
+      url: '/car/search',
+      headers,
+      data: {car_license_plate: licensePlate},
+    });
+
+    const json = await req.json();
+
+    if (!req.ok) {
+      throw new CarError(json.error);
+    }
+
+    return json as ICarSearchByLicensePlateResult;
   }
 }

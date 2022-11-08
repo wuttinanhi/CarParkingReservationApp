@@ -6,6 +6,7 @@ import {createErrorText, ErrorTextRed} from '../components/ErrorText';
 import {FloatingButton} from '../components/FloatingButton';
 import {HeaderBanner} from '../components/HeaderBanner';
 import {ModalWrapper} from '../components/ModalWrapper';
+import {SearchLicensePlateInput} from '../components/SearchLicensePlateInput';
 import {
   CarAddDto,
   CarBadRequestError,
@@ -164,6 +165,9 @@ export const CarPage = () => {
         modalContent={renderModalContent()}>
         <View style={defaultStyles.main}>
           <HeaderBanner headerText="Car" />
+          <View style={defaultStyles.mb10}>
+            <SearchLicensePlateInput />
+          </View>
           <ScrollView>
             {invoiceList.map((v: any, i: any) => renderRecord(v, i))}
           </ScrollView>
