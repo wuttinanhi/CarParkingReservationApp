@@ -6,6 +6,7 @@ import {defaultStyles} from '../styles/default.style';
 export interface PaginationWrapperProps {
   loadFunction: (page: number) => Promise<any>;
   renderItem: (item: any, index: number) => JSX.Element;
+  reloadHandler?: () => void;
 }
 
 export function PaginationWrapper<T>({

@@ -26,16 +26,12 @@ export const InvoiceCheckoutPage = () => {
 
       if (error) {
         Alert.alert(`Error code: ${error.code}`, error.message);
-        navigation.navigate('InvoicePage', {
-          error,
-        });
+        navigation.goBack();
       }
     } catch (error) {
       if (error instanceof Error) {
         Alert.alert('Error!', error.message);
-        navigation.navigate('InvoicePage', {
-          error,
-        });
+        navigation.goBack();
       }
     }
   };
@@ -44,14 +40,12 @@ export const InvoiceCheckoutPage = () => {
     const {error} = await presentPaymentSheet();
 
     if (error) {
-      Alert.alert(`Error code: ${error.code}`, error.message);
+      Alert.alert('Error', `${error.message} (${error.code})`);
     } else {
       Alert.alert('Success', 'Transaction completed.');
     }
 
-    navigation.navigate('InvoicePage', {
-      error: null,
-    });
+    navigation.goBack();
   };
 
   async function run() {

@@ -1,21 +1,51 @@
-/* eslint-disable react-native/no-inline-styles */
+import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {Avatar, Button, Card, Text} from 'react-native-paper';
 import {DifferenceHourBetweenDates, fromStringToDate} from '../libs/etc';
-import {IReservationRecord} from '../libs/reservation.service';
+import {
+  IReservationRecord,
+  ReservationService,
+} from '../libs/reservation.service';
 import {defaultStyles} from '../styles/default.style';
 
 export interface IReservationCardProps {
-  reservation: IReservationRecord;
+  data: IReservationRecord;
+  reloadHandler?: () => void;
 }
 
-export const ReservationRecord = (props: IReservationCardProps) => {
-  function renderTextElapseTime() {
-    const {reservation} = props;
-    const start = fromStringToDate(
-      reservation.reservation.reservation_start_time,
+export const ReservationRecord = ({
+  data,
+  reloadHandler,
+}: IReservationCardProps) => {
+  const navigation = useNavigation<any>();
+
+  async function onReservationEndPress() {
+    const result = await ReservationService.endReservation(
+      data.reservation.reservation_id,
     );
-    const end = fromStringToDate(reservation.reservation.reservation_end_time);
+
+    if (reloadHandler) {
+      reloadHandler();
+    }
+
+    if (result.invoice.invoice_charge_amount > 0) {
+      navigation.navigate('InvoiceCheckoutPage', {
+        invoiceId: result.invoice.invoice_id,
+      });
+    }
+  }
+
+  function renderTextElapseTime() {
+    const start = fromStringToDate(data.reservation.reservation_start_time);
+
+    let end;
+    if (data.reservation.reservation_end_time) {
+      end = fromStringToDate(data.reservation.reservation_end_time);
+    } else {
+      // end = now date
+      end = new Date();
+    }
+
     const diff = DifferenceHourBetweenDates(start, end);
     return `Parked ${diff} ${diff > 1 ? 'hours' : 'hour'}`;
   }
@@ -24,7 +54,8 @@ export const ReservationRecord = (props: IReservationCardProps) => {
     return (
       <Button
         mode="contained"
-        disabled={props.reservation.reservation.reservation_end_time != null}>
+        disabled={data.reservation.reservation_end_time != null}
+        onPress={onReservationEndPress}>
         End Reservation
       </Button>
     );
@@ -33,9 +64,10 @@ export const ReservationRecord = (props: IReservationCardProps) => {
   return (
     <Card style={defaultStyles.mt05}>
       <Card.Title
-        title={`     #${props.reservation.reservation.reservation_id} ${props.reservation.car.car_type} (${props.reservation.car.car_license_plate})`}
-        subtitle={`     ${props.reservation.parking_lot.parking_lot_location}`}
-        left={() => <Avatar.Icon {...props} icon="ticket" />}
+        title={`     #${data.reservation.reservation_id} ${data.car.car_type} (${data.car.car_license_plate})`}
+        subtitle={`     ${data.parking_lot.parking_lot_location}`}
+        left={() => <Avatar.Icon icon="ticket" />}
+        titleVariant="titleMedium"
       />
       <Card>
         <Card.Actions>

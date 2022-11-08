@@ -3,5 +3,7 @@ export function fromStringToDate(dateString: string): Date {
 }
 
 export function DifferenceHourBetweenDates(date1: Date, date2: Date): number {
-  return Math.abs(date1.getTime() - date2.getTime()) / 36e5;
+  const diff = Math.abs(date1.getTime() - date2.getTime()) / 36e5;
+  // cut decimal to 2 digits
+  return Math.round(diff * 100) / 100;
 }

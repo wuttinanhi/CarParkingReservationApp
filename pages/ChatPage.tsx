@@ -20,7 +20,7 @@ export interface IChatPageProps {
   chatHeadRecord: IChatHeadRecord;
 }
 
-export const ChatPage = ({chatHeadRecord}: IChatPageProps) => {
+export const ChatPage = () => {
   const route = useRoute<any>();
   const scrollViewRef = React.useRef<any>();
 

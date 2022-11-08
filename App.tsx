@@ -18,6 +18,7 @@ import {PaymentService} from './libs/payment.service';
 import {CarPage} from './pages/CarPage';
 import {ChatListPage} from './pages/ChatListPage';
 import {ChatPage} from './pages/ChatPage';
+import {CreateReservationPage} from './pages/CreateReservationPage';
 import {IndexPage} from './pages/IndexPage';
 import {InvoiceCheckoutPage} from './pages/InvoiceCheckoutPage';
 import {InvoicePage} from './pages/InvoicePage';
@@ -94,6 +95,12 @@ const App = () => {
             <Stack.Screen
               name="InvoiceCheckoutPage"
               component={InvoiceCheckoutPage}
+              options={{animation: 'none'}}
+            />
+
+            <Stack.Screen
+              name="CreateReservationPage"
+              component={CreateReservationPage}
               options={{animation: 'none'}}
             />
           </Stack.Navigator>
