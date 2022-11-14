@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {BaseService} from './base.service';
+import {BaseBadRequestError, BaseService} from './base.service';
 import {RetrieveInfoError} from './error';
 
 export interface IUserFull {
@@ -23,18 +23,7 @@ export interface IUserShareable {
 
 export class AuthError extends Error {}
 
-export class AuthBadRequestError extends AuthError {
-  constructor(
-    protected keyDescriptionPair: Record<any, any>,
-    message = 'Invalid input format!',
-  ) {
-    super(message);
-  }
-
-  public getErrorRecord() {
-    return this.keyDescriptionPair;
-  }
-}
+export class AuthBadRequestError extends BaseBadRequestError {}
 
 export interface IAuthRegister {
   email: string;
@@ -49,6 +38,13 @@ export interface IAuthRegister {
 export interface IAuthLogin {
   email: string;
   password: string;
+}
+
+export interface IUpdateUser {
+  firstname: string;
+  lastname: string;
+  phone_number: string;
+  citizen_id: string;
 }
 
 export class AuthService extends BaseService {
@@ -175,5 +171,31 @@ export class AuthService extends BaseService {
     };
 
     return headers;
+  }
+
+  public static async updateProfile(data: IUpdateUser) {
+    const accessToken = await AuthService.getAccessToken();
+    if (!accessToken) {
+      return null;
+    }
+
+    const headers = await this.buildAuthHeader();
+    const req = await this.sendPatchRequest({
+      url: 'user/update',
+      headers,
+      data: data,
+    });
+
+    const json = await req.json();
+
+    if (req.status === 400) {
+      throw new AuthBadRequestError(json, 'Invalid data formatted!');
+    }
+
+    if (!req.ok) {
+      throw new AuthError('Failed to update user!');
+    }
+
+    return json as IUserFull;
   }
 }

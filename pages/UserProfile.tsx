@@ -2,6 +2,7 @@ import {useNavigation, useRoute} from '@react-navigation/native';
 import React from 'react';
 import {Linking, View} from 'react-native';
 import {Button, Text} from 'react-native-paper';
+import {AppBarWrapper} from '../components/AppBarWrapper';
 import {IUserShareable} from '../libs/auth.service';
 import {defaultStyles} from '../styles/default.style';
 
@@ -42,34 +43,38 @@ export function UserProfile() {
   }
 
   return (
-    <View style={defaultStyles.main}>
-      <View style={defaultStyles.mt20}>
-        <Text variant="displaySmall" style={defaultStyles.textCenter}>
-          User Profile
-        </Text>
+    <>
+      <AppBarWrapper title="Search Profile" />
 
-        <View style={defaultStyles.mt20}>
-          <Text variant="titleLarge" style={defaultStyles.textCenter}>
-            {userDetails.user_firstname} {userDetails.user_lastname}
+      <View style={defaultStyles.main}>
+        <View style={defaultStyles.mt50}>
+          <Text variant="displaySmall" style={defaultStyles.textCenter}>
+            User Profile
           </Text>
-        </View>
 
-        <View style={defaultStyles.mt30}>
-          <Button
-            mode="contained"
-            onPress={gotoChatPage}
-            style={defaultStyles.mb10}>
-            Chat with this user
-          </Button>
+          <View style={defaultStyles.mt10}>
+            <Text variant="titleLarge" style={defaultStyles.textCenter}>
+              {userDetails.user_firstname} {userDetails.user_lastname}
+            </Text>
+          </View>
 
-          <Button
-            mode="contained"
-            onPress={callUser}
-            style={defaultStyles.mb10}>
-            Telephone call
-          </Button>
+          <View style={defaultStyles.mt10}>
+            <Button
+              mode="contained"
+              onPress={gotoChatPage}
+              style={defaultStyles.mb05}>
+              Chat with this user
+            </Button>
+
+            <Button
+              mode="contained"
+              onPress={callUser}
+              style={defaultStyles.mb05}>
+              Telephone call
+            </Button>
+          </View>
         </View>
       </View>
-    </View>
+    </>
   );
 }

@@ -27,8 +27,7 @@ export class BaseBadRequestError extends Error {
 }
 
 export class BaseService {
-  protected static readonly baseUrl =
-    'https://car-parking-reservation-api-production.up.railway.app/';
+  protected static readonly baseUrl = 'http://10.140.2.11:81/';
 
   protected static async sendGetRequest(opts: IRequestOptions) {
     const fetchHeaders = opts.headers ?? {};

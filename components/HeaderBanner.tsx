@@ -14,7 +14,7 @@ export interface HeaderBannerProps {
 
 export function HeaderBanner({headerText}: HeaderBannerProps) {
   return (
-    <Text variant="displayMedium" style={styles.default}>
+    <Text variant="displaySmall" style={styles.default}>
       {headerText}
     </Text>
   );

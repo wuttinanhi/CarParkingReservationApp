@@ -2,18 +2,12 @@ import React from 'react';
 import {ScrollView, View} from 'react-native';
 import {Button, Text, TextInput} from 'react-native-paper';
 import {CarCard} from '../components/CarCard';
-import {createErrorText, ErrorTextRed} from '../components/ErrorText';
+import {createErrorRender, createErrorText} from '../components/ErrorText';
 import {FloatingButton} from '../components/FloatingButton';
 import {HeaderBanner} from '../components/HeaderBanner';
 import {ModalWrapper} from '../components/ModalWrapper';
 import {SearchLicensePlateInput} from '../components/SearchLicensePlateInput';
-import {
-  CarAddDto,
-  CarBadRequestError,
-  CarError,
-  CarService,
-  ICarRecord,
-} from '../libs/car.service';
+import {CarAddDto, CarService, ICarRecord} from '../libs/car.service';
 import {defaultStyles} from '../styles/default.style';
 
 export const CarPage = () => {
@@ -52,6 +46,7 @@ export const CarPage = () => {
     setCarType('');
     setCarLicensePlate('');
     setCarModalErrorObj(null);
+    // close modal
     setModalVisible(false);
   }
 
@@ -72,15 +67,12 @@ export const CarPage = () => {
         });
       }
 
+      console.log(modalMode, modalEditData);
+
       loadData();
       closeModal();
     } catch (e) {
-      if (e instanceof CarBadRequestError) {
-        setCarModalErrorObj(e.getErrorRecord());
-      }
-      if (e instanceof CarError) {
-        setCarModalErrorObj(e);
-      }
+      setCarModalErrorObj(e);
     } finally {
       setCarModalButtonDisabled(false);
     }
@@ -92,9 +84,12 @@ export const CarPage = () => {
         <Text variant="titleLarge" style={defaultStyles.mt05}>
           {modalMode === 'add' ? 'Add' : 'Edit'} car
         </Text>
-        {carModalErrorObj instanceof CarError && (
+        {/* {carModalErrorObj instanceof CarError && (
           <ErrorTextRed message={carModalErrorObj.message} />
-        )}
+        )} */}
+
+        {createErrorRender(carModalErrorObj)}
+
         <TextInput
           placeholder="Car Type"
           mode="outlined"
@@ -103,6 +98,7 @@ export const CarPage = () => {
           onChangeText={setCarType}
         />
         {createErrorText<CarAddDto>(carModalErrorObj, 'car_type')}
+
         <TextInput
           placeholder="Car License Plate"
           mode="outlined"
@@ -111,6 +107,7 @@ export const CarPage = () => {
           onChangeText={setCarLicensePlate}
         />
         {createErrorText<CarAddDto>(carModalErrorObj, 'car_license_plate')}
+
         <Button
           mode="contained"
           disabled={carModalButtonDisabled}

@@ -40,6 +40,7 @@ export const ChatPage = () => {
         return;
       }
 
+      console.log('Logging in...');
       socketHandler.emit(
         'login',
         {jwt_token: await AuthService.getAccessToken()},
@@ -78,7 +79,8 @@ export const ChatPage = () => {
     }
 
     console.log('Loading chat...');
-
+    // start measure time
+    const startTime = new Date().getTime();
     const response = await ChatService.listChatHistory({
       order_by: 'id',
       page: 1,
@@ -89,6 +91,9 @@ export const ChatPage = () => {
 
     setChatHistory(response);
 
+    // end measure time
+    const endTime = new Date().getTime();
+    console.log('Time taken to load chat: ' + (endTime - startTime) + 'ms');
     console.log('Chat loaded!');
   }
 
@@ -106,7 +111,14 @@ export const ChatPage = () => {
 
     loadSelfUserDetails();
 
-    const socket = io(BaseService.getApiUrl(), {
+    const socketServer = BaseService.getApiUrl();
+    // get port from spliting : and remove last character
+    const socketPort = socketServer.split(':')[2].slice(0, -1);
+
+    console.log('socketServer', socketServer, socketPort);
+
+    const socket = io(socketServer, {
+      port: socketPort,
       timeout: 1000,
       reconnectionDelay: 1000,
     });
@@ -114,12 +126,12 @@ export const ChatPage = () => {
     socket.on('connect', () => {
       setIsConnected(true);
       setSocketHandler(socket);
-      console.log('connected');
+      console.log('Connected');
     });
 
-    socket.on('disconnect', () => {
+    socket.on('disconnect', (reason: any) => {
       setIsConnected(false);
-      console.log('disconnect');
+      console.log('disconnect', reason);
     });
 
     socket.on('exception', data => {

@@ -73,6 +73,7 @@ export const LoginPage = () => {
 
         if (!checkToken) {
           setLoggingIn(false);
+          await AuthService.removeAccessToken();
           return;
         }
 

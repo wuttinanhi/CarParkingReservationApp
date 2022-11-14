@@ -4,6 +4,7 @@ import {View} from 'react-native';
 import {Button, Text} from 'react-native-paper';
 import DropDown from 'react-native-paper-dropdown';
 import Toast from 'react-native-toast-message';
+import {AppBarWrapper} from '../components/AppBarWrapper';
 import {createErrorText} from '../components/ErrorText';
 import {HeaderBanner} from '../components/HeaderBanner';
 import {CarService, ICarRecord} from '../libs/car.service';
@@ -93,57 +94,63 @@ export const CreateReservationPage = () => {
   }
 
   return (
-    <View style={defaultStyles.main}>
-      <HeaderBanner headerText="Create Reservation" />
+    <>
+      <AppBarWrapper title="Create Reservation " />
 
-      <View style={defaultStyles.formBody}>
-        <View style={defaultStyles.mb10}>
-          <Text variant="titleMedium">Car:</Text>
-          <DropDown
-            label="Car"
-            mode="outlined"
-            visible={showCarDropDown}
-            showDropDown={() => setShowCarDropDown(true)}
-            onDismiss={() => setShowCarDropDown(false)}
-            value={carId}
-            setValue={v => setCarId(v)}
-            list={carList.map(v => ({
-              label: `${v.car_type} (${v.car_license_plate})`,
-              value: v.car_id,
-            }))}
-          />
-          {createErrorText(errorObject, 'car_id')}
-        </View>
+      <View style={defaultStyles.mt20} />
 
-        <View style={defaultStyles.mb10}>
-          <Text variant="titleMedium">Parking Lot:</Text>
-          <DropDown
-            label="Parking Lot"
-            mode="outlined"
-            visible={showParkingLotDropDown}
-            showDropDown={() => setShowParkingLotDropDown(true)}
-            onDismiss={() => setShowParkingLotDropDown(false)}
-            value={parkingLotId}
-            setValue={v => setParkingLotId(v)}
-            list={parkingLotList.map(v => ({
-              label: `${v.location}`,
-              value: v.id,
-            }))}
-          />
-          {createErrorText(errorObject, 'parking_lot_id')}
-        </View>
+      <View style={defaultStyles.main}>
+        <HeaderBanner headerText="New Reservation" />
 
-        <View style={defaultStyles.mb10}>
-          <Button
-            mode="contained"
-            onPress={doCreateReservation}
-            disabled={createButtonDisabled}
-            style={defaultStyles.formSpace}>
-            Create Reservation
-          </Button>
+        <View style={defaultStyles.formBody}>
+          <View style={defaultStyles.mb05}>
+            <Text variant="titleMedium">Car:</Text>
+            <DropDown
+              label="Car"
+              mode="outlined"
+              visible={showCarDropDown}
+              showDropDown={() => setShowCarDropDown(true)}
+              onDismiss={() => setShowCarDropDown(false)}
+              value={carId}
+              setValue={v => setCarId(v)}
+              list={carList.map(v => ({
+                label: `${v.car_type} (${v.car_license_plate})`,
+                value: v.car_id,
+              }))}
+            />
+            {createErrorText(errorObject, 'car_id')}
+          </View>
+
+          <View style={defaultStyles.mb05}>
+            <Text variant="titleMedium">Parking Lot:</Text>
+            <DropDown
+              label="Parking Lot"
+              mode="outlined"
+              visible={showParkingLotDropDown}
+              showDropDown={() => setShowParkingLotDropDown(true)}
+              onDismiss={() => setShowParkingLotDropDown(false)}
+              value={parkingLotId}
+              setValue={v => setParkingLotId(v)}
+              list={parkingLotList.map(v => ({
+                label: `${v.location}`,
+                value: v.id,
+              }))}
+            />
+            {createErrorText(errorObject, 'parking_lot_id')}
+          </View>
+
+          <View style={defaultStyles.mb05}>
+            <Button
+              mode="contained"
+              onPress={doCreateReservation}
+              disabled={createButtonDisabled}
+              style={defaultStyles.formSpace}>
+              Create Reservation
+            </Button>
+          </View>
         </View>
       </View>
-    </View>
+    </>
   );
 };
 
